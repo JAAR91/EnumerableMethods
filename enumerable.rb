@@ -26,5 +26,11 @@ module Enumerable
     my_each { |item| output = false unless yield(item) }
     output
   end
+
+  def my_any?()
+    output = false
+    self.my_each{|item| output = true if yield(item)}
+    output
+  end
 end
 
