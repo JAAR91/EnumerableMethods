@@ -1,7 +1,7 @@
 module Enumerable
   def my_each()
     i = 0
-    while (i - self.length).negative?
+    while (i - length).negative?
       yield(self[i])
       i += 1
     end
@@ -29,7 +29,7 @@ module Enumerable
 
   def my_any?()
     output = false
-    self.my_each{|item| output = true if yield(item)}
+    my_each { |item| output = true if yield(item) }
     output
   end
 
@@ -41,7 +41,7 @@ module Enumerable
 
   def my_count()
     count = 0
-    self.my_each{|item| count += 1 if yield(item)}
+    my_each { |item| count += 1 if yield(item) }
     count
   end
 
@@ -56,8 +56,8 @@ module Enumerable
   end
 
   def my_inject()
-    result=self[0]
-    self.my_each{|item| result=yield(result,item)}
+    result = self[0]
+    my_each { |item| result = yield(result, item) }
     result
   end
 
@@ -65,4 +65,3 @@ module Enumerable
     my_inject { |factora, factorb| factora * factorb }
   end
 end
-
