@@ -12,5 +12,13 @@ module Enumerable
       yield(self[i], i)
     end
   end
+
+  def my_select()
+    newarray = []
+    array.each do |item|
+      newarray.push(item) if yield(item)
+    end
+    newarray
+  end
 end
 
