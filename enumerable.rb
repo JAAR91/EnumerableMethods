@@ -38,5 +38,11 @@ module Enumerable
     my_each { |item| output = false if yield(item) }
     output
   end
+
+  def my_count()
+    count = 0
+    self.my_each{|item| count += 1 if yield(item)}
+    count
+  end
 end
 
