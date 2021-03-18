@@ -44,5 +44,15 @@ module Enumerable
     self.my_each{|item| count += 1 if yield(item)}
     count
   end
+
+  def my_map(proc = nil)
+    newarray = []
+    if proc.nil?
+      my_each { |item| newarray.push(yield(item)) }
+    else
+      my_each { |item| newarray.push(proc[item]) }
+    end
+    newarray
+  end
 end
 
