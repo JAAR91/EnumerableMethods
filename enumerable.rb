@@ -32,5 +32,11 @@ module Enumerable
     self.my_each{|item| output = true if yield(item)}
     output
   end
+
+  def my_none?()
+    output = true
+    my_each { |item| output = false if yield(item) }
+    output
+  end
 end
 
