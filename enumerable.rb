@@ -54,5 +54,11 @@ module Enumerable
     end
     newarray
   end
+
+  def my_inject()
+    result=self[0]
+    self.my_each{|item| result=yield(result,item)}
+    result
+  end
 end
 
