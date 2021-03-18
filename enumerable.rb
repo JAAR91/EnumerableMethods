@@ -6,4 +6,11 @@ module Enumerable
       i += 1
     end
   end
+
+  def my_each_with_index()
+    length.times do |i|
+      yield(self[i], i)
+    end
+  end
 end
+
