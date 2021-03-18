@@ -20,5 +20,11 @@ module Enumerable
     end
     newarray
   end
+
+  def my_all?()
+    output = true
+    my_each { |item| output = false unless yield(item) }
+    output
+  end
 end
 
