@@ -1,25 +1,27 @@
 module Enumerable
   def my_each()
-    return self.to_enum unless block_given?
+    return to_enum unless block_given?
+
     i = 0
-    while (i < self.to_a.length)
-      yield(self.to_a[i])
+    while i < to_a.length
+      yield(to_a[i])
       i += 1
     end
     self
   end
 
   def my_each_with_index()
-    return self.to_enum unless block_given?
-    self.to_a.length.times do |i|
-      yield(self.to_a[i], i)
+    return to_enum unless block_given?
+
+    to_a.length.times do |i|
+      yield(to_a[i], i)
     end
     self
   end
 
   def my_select()
     newarray = []
-    my_each{ |item| newarray.push(item) if yield(item)}
+    my_each{ |item| newarray.push(item) if yield(item) }
     newarray
   end
 
@@ -29,15 +31,15 @@ module Enumerable
         my_each { |item| return false unless item.is_a?(arg) }
         return true
       elsif arg.is_a?(Regexp)
-        my_each { |item| return false if item.scan(arg).length.zero? }     
-        return true     
+        my_each { |item| return false if item.scan(arg).length.zero? }
+        return true
       elsif arg.nil?
-        self.my_each { |i| return false unless !!i }
+        my_each { |i| return false unless i }
         return true
       end
-    end    
+    end
     my_each { |item| return false unless yield(item) }
-    return true
+    true
   end
 
   def my_any?(arg = nil)
@@ -46,15 +48,15 @@ module Enumerable
         my_each { |item| return true if item.is_a?(arg) }
         return false
       elsif arg.is_a?(Regexp)
-        my_each { |item| return true if !item.scan(arg).length.zero? }
+        my_each { |item| return true unless item.scan(arg).length.zero? }
         return false
       elsif arg.nil?
-        my_each { |item| return true if !!item }
+        my_each { |item| return true if item }
         return false
       end
     end
     my_each { |item| return true if yield(item) }
-    return false
+    false
   end
 
   def my_none?(arg = nil)
@@ -63,13 +65,13 @@ module Enumerable
         my_each { |item| return false if item.is_a?(arg) }
         return true
       elsif arg.is_a?(Regexp)
-        my_each { |item| return false if !item.scan(arg).length.zero? }     
-        return true     
+        my_each { |item| return false unless item.scan(arg).length.zero? }
+        return true
       elsif arg.nil?
-        self.my_each { |i| return false if !!i }
+        my_each { |i| return false unless !i }
         return true
       end
-    end  
+    end
     my_each { |item| return false if yield(item) }
   end
 
@@ -100,4 +102,4 @@ module Enumerable
   end
 end
 
-puts [nil, false, nil, false].my_none?
+puts [1,2,3,4,5].my_any?
