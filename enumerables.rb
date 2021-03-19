@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -36,7 +34,10 @@ module Enumerable
         my_each { |item| return false if item.scan(arg).length.zero? }
         return true
       elsif arg.nil?
-        my_each { |i| return false unless i }
+        my_each { |item| return false unless item }
+        return true
+      else
+        my_each { |item| return false unless item == arg }
         return true
       end
     end
@@ -55,6 +56,9 @@ module Enumerable
       elsif arg.nil?
         my_each { |item| return true if item }
         return false
+      else
+        my_each { |item| return true if item == arg }
+        return false
       end
     end
     my_each { |item| return true if yield(item) }
@@ -70,20 +74,34 @@ module Enumerable
         my_each { |item| return false unless item.scan(arg).length.zero? }
         return true
       elsif arg.nil?
-        my_each { |i| return false if i }
+        my_each { |item| return false if item }
+        return true
+      else
+        my_each { |item| return false if item == arg }
         return true
       end
     end
     my_each { |item| return false if yield(item) }
+    true
   end
 
-  def my_count
+  def my_count(arg = nil)
     count = 0
+    unless block_given?
+      if arg.nil?
+        return length
+      else
+        my_each { |item| count += 1 if item == arg }
+        return count
+      end
+    end
     my_each { |item| count += 1 if yield(item) }
     count
   end
 
   def my_map(proc = nil)
+    return to_enum unless block_given?
+
     newarray = []
     if proc.nil?
       my_each { |item| newarray.push(yield(item)) }
@@ -93,9 +111,19 @@ module Enumerable
     newarray
   end
 
-  def my_inject
-    result = self[0]
-    my_each { |item| result = yield(result, item) }
+  def my_inject(ini = nil, arg = nil)
+    if ini.is_a?(Symbol)
+      arg = ini
+      result = nil
+    elsif !ini.nil?
+      result = ini
+    end
+    if !block_given? && arg.is_a?(Symbol)
+      op = arg.to_proc
+      my_each { |item| result = result.nil? ? item : op.call(result, item) }
+      return result
+    end
+    my_each { |item| result = result.nil? ? item : yield(result, item) }
     result
   end
 
@@ -103,5 +131,3 @@ module Enumerable
     my_inject { |factora, factorb| factora * factorb }
   end
 end
-
-p [1, 2, 3, 4].my_none?
