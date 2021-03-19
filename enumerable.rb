@@ -25,12 +25,21 @@ module Enumerable
 
   def my_all?(arg=nil)
     unless block_given?
-      if arg!=nil && arg.is_a?(Class)
+      if arg.is_a?(Class)
+        p "class"
         my_each { |item| return false unless item.is_a?(arg) }
         return true
-      else
+      elsif arg.is_a?(Regexp)
+        p "regexp"
+        my_each { |item| return false if item.scan(arg).length.zero? }     
+        return true     
+      elsif arg.nil?
+        p "empty"
         self.my_each{|i| return false unless !!i}
         return true
+      else
+        p "pattern"
+        return false
       end
     end    
     my_each { |item| return false unless yield(item) }
@@ -76,4 +85,4 @@ module Enumerable
   end
 end
 
-p [1, "j", 3.14].my_all?(Numeric)
+p %w[one two four].my_all?(Array)
