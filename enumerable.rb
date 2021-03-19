@@ -1,17 +1,20 @@
 module Enumerable
   def my_each()
+    return self.to_enum unless block_given?
     i = 0
-    while (i < self.length)
-      yield(self[i])
+    while (i < self.to_a.length)
+      yield(self.to_a[i])
       i += 1
     end
     self
   end
 
   def my_each_with_index()
-    self.length.times do |i|
-      yield(self[i], i)
+    return self.to_enum unless block_given?
+    self.to_a.length.times do |i|
+      yield(self.to_a[i], i)
     end
+    self
   end
 
   def my_select()
@@ -65,4 +68,4 @@ module Enumerable
   end
 end
 
-p [1,2,3,4].my_select{|item| item == 2 }
+p [1, 2, nil, 5].my_each()
