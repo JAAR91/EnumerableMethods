@@ -23,33 +23,38 @@ module Enumerable
     newarray
   end
 
-  def my_all?(arg=nil)
+  def my_all?(arg = nil)
     unless block_given?
       if arg.is_a?(Class)
-        p "class"
         my_each { |item| return false unless item.is_a?(arg) }
         return true
       elsif arg.is_a?(Regexp)
-        p "regexp"
         my_each { |item| return false if item.scan(arg).length.zero? }     
         return true     
       elsif arg.nil?
-        p "empty"
-        self.my_each{|i| return false unless !!i}
+        self.my_each { |i| return false unless !!i }
         return true
-      else
-        p "pattern"
-        return false
       end
     end    
     my_each { |item| return false unless yield(item) }
     return true
   end
 
-  def my_any?()
-    output = false
-    my_each { |item| output = true if yield(item) }
-    output
+  def my_any?(arg = nil)
+    unless block_given?
+      if arg.is_a?(Class)
+        my_each { |item| return true if item.is_a?(arg) }
+        return false
+      elsif arg.is_a?(Regexp)
+        my_each { |item| return true if !item.scan(arg).length.zero? }
+        return false
+      elsif arg.nil?
+        my_each { |item| return true if !!item }
+        return false
+      end
+    end
+    my_each { |item| return true if yield(item) }
+    return false
   end
 
   def my_none?()
@@ -85,4 +90,4 @@ module Enumerable
   end
 end
 
-p %w[one two four].my_all?(Array)
+puts [ nil, nil, nil, nil].my_any?
