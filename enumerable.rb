@@ -1,23 +1,22 @@
 module Enumerable
   def my_each()
     i = 0
-    while (i - length).negative?
+    while (i < self.length)
       yield(self[i])
       i += 1
     end
+    self
   end
 
   def my_each_with_index()
-    length.times do |i|
+    self.length.times do |i|
       yield(self[i], i)
     end
   end
 
   def my_select()
     newarray = []
-    array.each do |item|
-      newarray.push(item) if yield(item)
-    end
+    my_each{ |item| newarray.push(item) if yield(item)}
     newarray
   end
 
@@ -65,3 +64,5 @@ module Enumerable
     my_inject { |factora, factorb| factora * factorb }
   end
 end
+
+p [1,2,3,4].my_select{|item| item == 2 }
