@@ -57,10 +57,20 @@ module Enumerable
     return false
   end
 
-  def my_none?()
-    output = true
-    my_each { |item| output = false if yield(item) }
-    output
+  def my_none?(arg = nil)
+    unless block_given?
+      if arg.is_a?(Class)
+        my_each { |item| return false if item.is_a?(arg) }
+        return true
+      elsif arg.is_a?(Regexp)
+        my_each { |item| return false if !item.scan(arg).length.zero? }     
+        return true     
+      elsif arg.nil?
+        self.my_each { |i| return false if !!i }
+        return true
+      end
+    end  
+    my_each { |item| return false if yield(item) }
   end
 
   def my_count()
@@ -90,4 +100,4 @@ module Enumerable
   end
 end
 
-puts [ nil, nil, nil, nil].my_any?
+puts [nil, false, nil, false].my_none?
