@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Enumerable
-  def my_each()
+  def my_each
     return to_enum unless block_given?
 
     i = 0
@@ -10,7 +12,7 @@ module Enumerable
     self
   end
 
-  def my_each_with_index()
+  def my_each_with_index
     return to_enum unless block_given?
 
     to_a.length.times do |i|
@@ -19,9 +21,9 @@ module Enumerable
     self
   end
 
-  def my_select()
+  def my_select
     newarray = []
-    my_each{ |item| newarray.push(item) if yield(item) }
+    my_each { |item| newarray.push(item) if yield(item) }
     newarray
   end
 
@@ -68,14 +70,14 @@ module Enumerable
         my_each { |item| return false unless item.scan(arg).length.zero? }
         return true
       elsif arg.nil?
-        my_each { |i| return false unless !i }
+        my_each { |i| return false if i }
         return true
       end
     end
     my_each { |item| return false if yield(item) }
   end
 
-  def my_count()
+  def my_count
     count = 0
     my_each { |item| count += 1 if yield(item) }
     count
@@ -91,15 +93,15 @@ module Enumerable
     newarray
   end
 
-  def my_inject()
+  def my_inject
     result = self[0]
     my_each { |item| result = yield(result, item) }
     result
   end
 
-  def multiply_els()
+  def multiply_els
     my_inject { |factora, factorb| factora * factorb }
   end
 end
 
-puts [1,2,3,4,5].my_any?
+p [1, 2, 3, 4].my_none?
