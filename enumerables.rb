@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/AbcSize, Metrics/ModuleLength
+
+# module enumerable
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -29,17 +34,14 @@ module Enumerable
     unless block_given?
       if arg.is_a?(Class)
         my_each { |item| return false unless item.is_a?(arg) }
-        return true
       elsif arg.is_a?(Regexp)
         my_each { |item| return false if item.scan(arg).length.zero? }
-        return true
       elsif arg.nil?
         my_each { |item| return false unless item }
-        return true
       else
         my_each { |item| return false unless item == arg }
-        return true
       end
+      return true
     end
     my_each { |item| return false unless yield(item) }
     true
@@ -49,17 +51,14 @@ module Enumerable
     unless block_given?
       if arg.is_a?(Class)
         my_each { |item| return true if item.is_a?(arg) }
-        return false
       elsif arg.is_a?(Regexp)
         my_each { |item| return true unless item.scan(arg).length.zero? }
-        return false
       elsif arg.nil?
         my_each { |item| return true if item }
-        return false
       else
         my_each { |item| return true if item == arg }
-        return false
       end
+      return false
     end
     my_each { |item| return true if yield(item) }
     false
@@ -69,17 +68,14 @@ module Enumerable
     unless block_given?
       if arg.is_a?(Class)
         my_each { |item| return false if item.is_a?(arg) }
-        return true
       elsif arg.is_a?(Regexp)
         my_each { |item| return false unless item.scan(arg).length.zero? }
-        return true
       elsif arg.nil?
         my_each { |item| return false if item }
-        return true
       else
         my_each { |item| return false if item == arg }
-        return true
       end
+      return true
     end
     my_each { |item| return false if yield(item) }
     true
@@ -88,12 +84,10 @@ module Enumerable
   def my_count(arg = nil)
     count = 0
     unless block_given?
-      if arg.nil?
-        return length
-      else
-        my_each { |item| count += 1 if item == arg }
-        return count
-      end
+      return length if arg.nil?
+
+      my_each { |item| count += 1 if item == arg }
+      return count
     end
     my_each { |item| count += 1 if yield(item) }
     count
@@ -131,3 +125,5 @@ module Enumerable
     my_inject { |factora, factorb| factora * factorb }
   end
 end
+
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/AbcSize, Metrics/ModuleLength
