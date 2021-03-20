@@ -23,6 +23,8 @@ module Enumerable
   end
 
   def my_select
+    return to_enum unless block_given?
+
     newarray = []
     my_each { |item| newarray.push(item) if yield(item) }
     newarray
@@ -82,7 +84,7 @@ module Enumerable
   def my_count(arg = nil)
     count = 0
     unless block_given?
-      return length if arg.nil?
+      return to_a.length if arg.nil?
 
       my_each { |item| count += 1 if item == arg }
       return count
@@ -125,3 +127,5 @@ module Enumerable
 end
 
 # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
+
+p Range.new(5, 50).count
