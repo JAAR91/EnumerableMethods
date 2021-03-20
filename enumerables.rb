@@ -127,5 +127,3 @@ module Enumerable
 end
 
 # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
-
-p Range.new(5, 50).count
