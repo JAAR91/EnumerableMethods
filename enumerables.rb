@@ -120,10 +120,10 @@ module Enumerable
     my_each { |item| result = result.nil? ? item : yield(result, item) }
     result
   end
+end
 
-  def multiply_els
-    my_inject { |factora, factorb| factora * factorb }
-  end
+def multiply_els(arr)
+  arr.my_inject { |factora, factorb| factora * factorb }
 end
 
 # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
